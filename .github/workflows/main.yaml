@@ -8,19 +8,19 @@ jobs:
   test-build:
     runs-on: ubuntu-latest
 
-    strategy: 
+    strategy:
       matrix:
         node-version: [16.x]
-    
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Testing Build pre-Deploy
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm i
-      - run: npm run build
+    - uses: actions/checkout@v2
+    - name: Testing Build pre-Deploy
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: "npm"
+    - run: npm i
+    - run: npm run build
 
   deploy:
     needs: test-build
@@ -40,7 +40,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
               eval "$(ssh-agent -s)"
-              ssh-add ~/.ssh/ssh-praktikan31
+              ssh-add ~/.ssh/ssh-praktikan35
               echo "Cek folder project";
                 [ ! -d "${HOME}/senpro/505520/modul02/senpro-github-action/" ] &&
                 {
