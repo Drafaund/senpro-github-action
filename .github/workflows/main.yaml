@@ -29,31 +29,31 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-    
+
     steps:
-      - name: Build app on VM
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST}}
-          username: ${{ secrets.USERNAME}}
-          password: ${{ secrets.PASSWORD}}
-          port: ${{ secrets.PORT }}
-          script:
-            eval "${ssh-agent -s}"
-            ssh-add ~/.ssh/ssh-praktikan35
-            echo "Cek folder project";
-            [ ! -d "${HOME}/senpro/505520/modul02/senpro-github-action/" ] &&
-              {
+    - name: Build app on VM
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+              eval "$(ssh-agent -s)"
+              ssh-add ~/.ssh/ssh-praktikan31
+              echo "Cek folder project";
+                [ ! -d "${HOME}/senpro/505520/modul02/senpro-github-action/" ] &&
+                {
                   echo "Repository belum di-clone. Cloning...";
                   mkdir -p ~/senpro/505520/modul02;
                   cd ~/senpro/505520/modul02;
-                  git clone https://github.com/Drafaund/senpro-github-action.git;
+                  git clone https://github.com/keepurspiritbruv/senpro-github-action.git;
                   cd ~/senpro/505520/modul02/senpro-github-action;
                   echo "Install Package dan Build Project";
                   npm install;
                   npm run build;
-              }   ||
-              {
+                } ||
+                {
                   echo "Repository sudah ada. Building...";
                   cd ~/senpro/505520/modul02/senpro-github-action;
                   git restore .;
@@ -61,4 +61,4 @@ jobs:
                   echo "Install Package dan Build Project";
                   npm install;
                   npm run build;
-              }
+                }
